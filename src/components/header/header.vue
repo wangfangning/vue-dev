@@ -17,9 +17,31 @@
         <span class="text">{{ seller.supports[0].description }}</span>
       </div>
     </div>
+    <div class="support-count" v-if="seller.supports" @click="showDetail">
+      <span class="count">{{ seller.supports.length }}个</span>
+      <i class="icon-keyboard_arrow_right"></i>
+    </div>
   </div>
-  <div class="bulletin_wrapper">
+  <div class="bulletin_wrapper" @click="showDetail">
+    <span class="bulletin_title"></span><span class="bulletin_text">{{ seller.bulletin }}</span>
+    <i class="icon-keyboard_arrow_right"></i>
+  </div>
+  <div class="background">
+    <img :src="seller.avatar" alt="" width="100%" height="100%">
+  </div>
+  <div class="detail" v-show="detailShow">
+<div class="detail_wrapper clearfix">
+  <div class="detail_main">
+<p>{{ seller.bulletin }}</p>
+<p>{{ seller.bulletin }}</p>
 
+<p>{{ seller.bulletin }}</p>
+  </div>
+
+</div>
+<div class="detail_close">
+<i class="icon-close"></i>
+</div>
   </div>
 </div>
 </template>
@@ -31,19 +53,32 @@ export default {
       type: Object
     }
   },
+  data() {
+    return {
+      detailShow: false
+    };
+  },
+  methods: {
+    showDetail() {
+      this.detailShow = true;
+    }
+  },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
   }
 };
 </script>
 
-<style lang="scss">
-@import "../../common/sass/mixin.scss";
+<style lang="scss">@import "../../common/sass/mixin.scss";
 .header {
+    position: relative;
     color: #fff;
-    background-color: #000;
+    overflow: hidden;
+    background-color: rgba(7,17,27,0.5);
     .content_wrapper {
+        position: relative;
         padding: 24px 12px 18px 24px;
+
         font-size: 0;
         .avatar {
             display: inline-block;
@@ -55,7 +90,6 @@ export default {
         .content {
             display: inline-block;
             margin-left: 16px;
-
 
             .title {
                 margin: 2px 0 8px;
@@ -104,12 +138,98 @@ export default {
                         @include bg-image( 'special_1');
                     }
                 }
-                .text{
-                  line-height: 12px;
-                  vertical-align: top;
-                  font-size: 12px;
+                .text {
+                    line-height: 12px;
+                    vertical-align: top;
+                    font-size: 10px;
                 }
             }
+        }
+        .support-count {
+            position: absolute;
+            right: 12px;
+            bottom: 14px;
+            padding: 0 8px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 14px;
+            background-color: rgba(0,0,0,.2);
+            text-align: center;
+            .count {
+                vertical-align: top;
+                font-size: 10px;
+            };
+            .icon-keyboard_arrow_right {
+                margin-right: 2px;
+                line-height: 24px;
+                font-size: 10px;
+            }
+        }
+    }
+    .bulletin_wrapper {
+        position: relative;
+        height: 28px;
+        line-height: 28px;
+        padding-left: 12px;
+        padding-right: 22px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: rgba(7,17,27,0.2);
+        .bulletin_title {
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 8px;
+            width: 22px;
+            height: 12px;
+            @include bg-image( 'bulletin');
+            background-size: 22px 12px;
+            background-repeat: no-repeat;
+        };
+        .bulletin_text {
+            vertical-align: top;
+            margin: 0 4px;
+            font-size: 10px;
+        };
+        .icon-keyboard_arrow_right {
+            position: absolute;
+            font-size: 10px;
+            right: 12px;
+            top: 8px;
+        }
+    }
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        filter: blur(10px);
+    }
+    .detail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(7,17,27,0.8);
+        .detail_wrapper{
+          min-height: 100%;
+        }
+        .detail_main{
+          margin-top: 64px;
+          padding-bottom: 64px;
+        };
+        .detail_close{
+position: relative;
+width: 32px;
+height: 32px;
+margin: -64px auto 0 auto;
+clear: both;
+font-size: 32px;
         }
     }
 }
