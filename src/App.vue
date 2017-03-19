@@ -1,0 +1,65 @@
+<template>
+<div class="app">
+  <v-header :seller="seller"></v-header>
+  <div class="tab border-1px">
+    <div class="tab_item">
+      <router-link to="/goods">商品</router-link>
+    </div>
+    <div class="tab_item">
+      <router-link to="/ratings">评论</router-link>
+    </div>
+    <div class="tab_item">
+      <router-link to="/seller">商家</router-link>
+    </div>
+  </div>
+  <router-view></router-view>
+</div>
+</template>
+
+<script type="text/ecmascript-6">
+import header from 'components/header/header';
+const ERR_OK = 0;
+
+export default {
+  data() {
+    return {
+      seller: {}
+    };
+  },
+  created() {
+    this.$http.get('/api/seller').then((response) => {
+      response = response.body;
+      if (response.errno === ERR_OK) {
+           this.seller = response.data;
+      }
+    });
+  },
+  components: {
+    'v-header': header
+  }
+};
+</script>
+
+<style lang="scss">
+@import "/common/sass/mixin.scss";
+.app {
+    .tab {
+        display: flex;
+        text-align: center;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        @include border-1px(rgba(7,17,27,0.1));
+        .tab_item {
+            flex: 1;
+            & > a {
+                display: block;
+            }
+            a.active {
+                color: red;
+            }
+        }
+    }
+
+}
+</style>
