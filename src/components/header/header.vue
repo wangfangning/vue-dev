@@ -32,14 +32,12 @@
   <div class="detail" v-show="detailShow">
 <div class="detail_wrapper clearfix">
   <div class="detail_main">
-<p>{{ seller.bulletin }}</p>
-<p>{{ seller.bulletin }}</p>
 
-<p>{{ seller.bulletin }}</p>
+<h1 class="name">{{seller.name}}</h1>
   </div>
 
 </div>
-<div class="detail_close">
+<div class="detail_close" @click="detailClose">
 <i class="icon-close"></i>
 </div>
   </div>
@@ -61,6 +59,9 @@ export default {
   methods: {
     showDetail() {
       this.detailShow = true;
+    },
+    detailClose() {
+      this.detailShow = false;
     }
   },
   created() {
@@ -69,7 +70,8 @@ export default {
 };
 </script>
 
-<style lang="scss">@import "../../common/sass/mixin.scss";
+<style lang="scss">
+@import "../../common/sass/mixin.scss";
 .header {
     position: relative;
     color: #fff;
@@ -218,10 +220,17 @@ export default {
         background-color: rgba(7,17,27,0.8);
         .detail_wrapper{
           min-height: 100%;
+          width: 100%;
         }
         .detail_main{
           margin-top: 64px;
           padding-bottom: 64px;
+          .name{
+            line-height: 16px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+          }
         };
         .detail_close{
 position: relative;
