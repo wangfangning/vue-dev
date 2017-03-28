@@ -13,7 +13,7 @@
         {{ seller.description }}/{{seller.deliveryTime}}分钟送达
       </div>
       <div class="supports" v-if="seller.supports">
-        <span class="icon" :class="classMap[seller.supports[0].type]"></span>
+        <icon :class="classMap[seller.supports[0].type]"></icon>
         <span class="text">{{ seller.supports[0].description }}</span>
       </div>
     </div>
@@ -40,8 +40,9 @@
           <v-title :text="title_top"></v-title>
           <ul v-if="seller.supports" class="supports">
             <li v-for="(item, index) in seller.supports" class="supports_item">
-              <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-              <span class="text">{{seller.supports[index].description}}</span>
+              <icon :class="classMap[item.type]"></icon>
+              <!-- <span class="icon" :class="classMap[item.type]"></span> -->
+              <span class="text">{{item.description}}</span>
             </li>
           </ul>
           <v-title :text="title_bottom"></v-title>
@@ -63,6 +64,7 @@
 <script type="text/ecmascript-6">
 import star from 'components/star/star';
 import title from 'components/title/title';
+import icon from 'components/icon/icon';
 export default {
   props: {
     seller: {
@@ -89,7 +91,8 @@ export default {
   },
   components: {
     star,
-    'v-title': title
+    'v-title': title,
+    icon
   }
 };
 </script>
@@ -243,12 +246,14 @@ export default {
         // opacity: 1;
         background-color: rgba(7,17,27,0.8);
         backdrop-filter:blur(10px);
-        &.fade-enter-active,&.fade-leave-active{
-          transition: all 0.5s;
+        &.fade-enter-active,
+        &.fade-leave-active {
+            transition: all 0.5s;
         };
-        &.fade-enter,&.fade-leave-active{
-          opacity: 0;
-          background-color: rgba(7,17,27,0);
+        &.fade-enter,
+        &.fade-leave-active {
+            opacity: 0;
+            background-color: rgba(7,17,27,0);
 
         }
         .detail_wrapper {
