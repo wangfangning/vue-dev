@@ -188,7 +188,7 @@ export default {
                 font-size: 10px;
             };
             .icon-keyboard_arrow_right {
-                margin-right: 2px;
+                margin-left: 2px;
                 line-height: 24px;
                 font-size: 10px;
             }

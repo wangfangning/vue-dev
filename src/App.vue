@@ -54,9 +54,11 @@ export default {
             flex: 1;
             & > a {
                 display: block;
+                font-size: 14px;
+                color: #4d555d;
             }
             a.active {
-                color: red;
+                color: #f01414;
             }
         }
     }
