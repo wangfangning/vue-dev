@@ -9,7 +9,7 @@
   </div>
   <div class="food-wrapper" ref="foodWrapper">
     <ul>
-      <li v-for="item in goods" class="food_list">
+      <li v-for="item in goods" class="food_list food_list_hook">
         <h1 class="title">{{item.name}}</h1>
         <ul>
           <li v-for="food in item.foods" class="food_item border-1px">
@@ -51,7 +51,9 @@ export default {
   },
   data() {
     return {
-      goods: []
+      goods: [],
+      listHeight: [],
+      scrollY: 0
     };
   },
   created() {
@@ -62,6 +64,7 @@ export default {
         this.goods = response.data;
         this.$nextTick(() => {
           this._initScroll();
+          this._calculateHeight();
         });
       }
     });
@@ -69,7 +72,24 @@ export default {
   methods: {
     _initScroll() {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
-      this.foodScroll = new BScroll(this.$refs.foodWrapper, {});
+      this.foodScroll = new BScroll(this.$refs.foodWrapper, {
+        probeType: 3
+      });
+      this.foodScroll.on('scroll', (pos) => {
+        this.scrollY = Math.abs(Math.round(pos.y));
+        console.log(this.scrollY);
+      });
+    },
+    _calculateHeight() {
+      let foodList = this.$refs.foodWrapper.getElementsByClassName('food_list_hook');
+      let height = 0;
+      this.listHeight.push(height);
+      for (let i = 0; i < foodList.length; i++) {
+        let item = foodList[i];
+        height += item.clientHeight;
+        this.listHeight.push(height);
+      }
+      console.log(this.listHeight);
     }
   }
 };
