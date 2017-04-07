@@ -2,7 +2,7 @@
 <div class="goods">
   <div class="menu-wrapper" ref="menuWrapper">
     <ul>
-      <li v-for="item in goods" class="menu_item">
+      <li v-for="(item,index) in goods" class="menu_item" :class="{'current':currentIndex===index}">
         <span class="text border-1px"><icon v-show="item.type>0" :class="classMap[item.type]"></icon>{{item.name}}</span>
       </li>
     </ul>
@@ -56,6 +56,18 @@ export default {
       scrollY: 0
     };
   },
+  computed: {
+    currentIndex() {
+      for (let i = 0; i < this.listHeight.length; i++) {
+        let height1 = this.listHeight[i];
+        let height2 = this.listHeight[i + 1];
+        if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+          return i;
+        }
+      }
+       return 0;
+    }
+  },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     this.$http.get('./api/goods').then((response) => {
@@ -77,7 +89,6 @@ export default {
       });
       this.foodScroll.on('scroll', (pos) => {
         this.scrollY = Math.abs(Math.round(pos.y));
-        console.log(this.scrollY);
       });
     },
     _calculateHeight() {
@@ -89,7 +100,6 @@ export default {
         height += item.clientHeight;
         this.listHeight.push(height);
       }
-      console.log(this.listHeight);
     }
   }
 };
@@ -112,7 +122,7 @@ export default {
             height: 54px;
             width: 56px;
             line-height: 14px;
-            margin: auto;
+          padding: 0 12px;
             .icon {
                 display: inline-block;
                 vertical-align: top;
@@ -143,6 +153,16 @@ export default {
                 font-size: 12px;
                 @include border-1px(rgba(7,17,27,0.1));
             }
+        };
+        .current{
+          position: relative;
+          z-index: 10;
+          margin-top: -1px;
+          background-color: #fff;
+          font-weight: 700;
+          .text{
+            @include border-none();
+          }
         }
     };
     .food-wrapper {
