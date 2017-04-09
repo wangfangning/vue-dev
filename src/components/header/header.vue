@@ -248,7 +248,7 @@ export default {
         backdrop-filter:blur(10px);
         &.fade-enter-active,
         &.fade-leave-active {
-            transition: all 0.5s;
+            transition: all 0.3s;
         };
         &.fade-enter,
         &.fade-leave-active {
@@ -324,6 +324,7 @@ export default {
                 .content {
                     padding: 0 12px;
                     line-height: 24px;
+                    text-align: justify;
                     font-size: 12px;
                 }
 

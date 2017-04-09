@@ -2,7 +2,7 @@
 <div class="goods">
   <div class="menu-wrapper" ref="menuWrapper">
     <ul>
-      <li v-for="(item,index) in goods" class="menu_item" :class="{'current':currentIndex===index}">
+      <li v-for="(item,index) in goods" class="menu_item" :class="{'current':currentIndex===index}" @click="selectMenu(index,$event)">
         <span class="text border-1px"><icon v-show="item.type>0" :class="classMap[item.type]"></icon>{{item.name}}</span>
       </li>
     </ul>
@@ -33,12 +33,15 @@
       </li>
     </ul>
   </div>
+  <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll';
 import icon from 'components/icon/icon';
+import shopcart from 'components/shopcart/shopcart';
+
 const ERR_OK = 0;
 export default {
   props: {
@@ -47,7 +50,8 @@ export default {
     }
   },
   components: {
-    icon
+    icon,
+    shopcart
   },
   data() {
     return {
@@ -65,7 +69,7 @@ export default {
           return i;
         }
       }
-       return 0;
+      return 0;
     }
   },
   created() {
@@ -82,8 +86,18 @@ export default {
     });
   },
   methods: {
+    selectMenu(index, event) {
+      if (!event._constructed) {
+        return;
+      };
+      let foodList = this.$refs.foodWrapper.getElementsByClassName('food_list_hook');
+      let el = foodList[index];
+      this.foodScroll.scrollToElement(el, 300);
+    },
     _initScroll() {
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+        click: true
+      });
       this.foodScroll = new BScroll(this.$refs.foodWrapper, {
         probeType: 3
       });
@@ -101,6 +115,7 @@ export default {
         this.listHeight.push(height);
       }
     }
+
   }
 };
 </script>
@@ -122,7 +137,7 @@ export default {
             height: 54px;
             width: 56px;
             line-height: 14px;
-          padding: 0 12px;
+            padding: 0 12px;
             .icon {
                 display: inline-block;
                 vertical-align: top;
@@ -154,15 +169,15 @@ export default {
                 @include border-1px(rgba(7,17,27,0.1));
             }
         };
-        .current{
-          position: relative;
-          z-index: 10;
-          margin-top: -1px;
-          background-color: #fff;
-          font-weight: 700;
-          .text{
-            @include border-none();
-          }
+        .current {
+            position: relative;
+            z-index: 10;
+            margin-top: -1px;
+            background-color: #fff;
+            font-weight: 700;
+            .text {
+                @include border-none();
+            }
         }
     };
     .food-wrapper {
