@@ -3,14 +3,14 @@
   <div class="content">
     <div class="content_left">
       <div class="logo_wrapper">
-        <div class="logo">
-          <i class="icon-shopping_cart"></i>
+        <div class="logo" :class="{'highlight':totalCount>0}">
+          <i class="icon-shopping_cart" :class="{'highlight':totalCount>0}"></i>
         </div>
         <div class="num" v-show="totalCount>0">
           {{totalCount}}
         </div>
       </div>
-      <div class="price">
+      <div class="price" :class="{'highlight':totalPrice>0}">
         ￥{{totalPrice}}
       </div>
       <div class="desc">
@@ -35,12 +35,7 @@ export default {
         return [{
             price: 10,
             count: 2
-          },
-          {
-            price: 10,
-            count: 3
-          }
-        ];
+          }];
       }
     },
     deliveryPrice: {
@@ -104,10 +99,16 @@ export default {
                     border-radius: 50%;
                     background: #2b343c;
                     text-align: center;
+                    &.highlight{
+                      background: rgb(0,160,220)
+                    }
                     .icon-shopping_cart {
                         line-height: 44px;
                         font-size: 24px;
                         color: #80858a;
+                        &.highlight{
+                          color: #fff;
+                        }
                     }
                 };
                 .num {
@@ -136,6 +137,9 @@ export default {
                 border-right: 1px solid rgba(255, 255, 255, .1);
                 font-size: 16px;
                 font-weight: 700;
+                &.highlight{
+                  color: #fff;
+                }
 
             };
             .desc {
