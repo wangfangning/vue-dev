@@ -3,14 +3,14 @@
   <div class="content">
     <div class="content_left">
       <div class="logo_wrapper">
-        <div class="logo" :class="{'highlight':totalCount>0}">
-          <i class="icon-shopping_cart" :class="{'highlight':totalCount>0}"></i>
+        <div class="logo" :class="{'highlight':totalCount > 0}">
+          <i class="icon-shopping_cart" :class="{'highlight':totalCount > 0}"></i>
         </div>
-        <div class="num" v-show="totalCount>0">
+        <div class="num" v-show="totalCount > 0">
           {{totalCount}}
         </div>
       </div>
-      <div class="price" :class="{'highlight':totalPrice>0}">
+      <div class="price" :class="{'highlight':totalPrice > 0}">
         ￥{{totalPrice}}
       </div>
       <div class="desc">
@@ -18,8 +18,8 @@
       </div>
     </div>
     <div class="content_right">
-      <div class="pay">
-        ￥{{minPrice}}元起送
+      <div class="pay" :class="payClass">
+        {{payDesc}}
       </div>
     </div>
   </div>
@@ -33,8 +33,8 @@ export default {
       type: Array,
       default () {
         return [{
-            price: 10,
-            count: 2
+            price: 5,
+            count: 4
           }];
       }
     },
@@ -61,6 +61,23 @@ export default {
         count += food.count;
       });
       return count;
+    },
+    payDesc() {
+      if (this.totalPrice === 0) {
+        return `￥${this.minPrice}元起送`;
+      } else if (this.minPrice > this.totalPrice) {
+        let diff = this.minPrice - this.totalPrice;
+        return `还差￥${diff}元起送`;
+      } else {
+        return '去结算';
+      }
+    },
+    payClass() {
+      if (this.totalPrice < this.minPrice) {
+          return 'no_enough';
+      } else {
+        return 'enough';
+      }
     }
   }
 };
@@ -161,7 +178,13 @@ export default {
                 text-align: center;
                 font-size: 12px;
                 font-weight: 700;
-                background: #2b333b;
+                &.no_enough{
+                  background: #2b333b;
+                };
+                &.enough{
+                  background: #00b43c;
+                  color: #fff;
+                }
             }
         };
 
