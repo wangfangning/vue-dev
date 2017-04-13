@@ -34,7 +34,7 @@ export default {
       default () {
         return [{
             price: 5,
-            count: 4
+            count: 2
           }];
       }
     },
@@ -51,6 +51,7 @@ export default {
     totalPrice() {
       let total = 0;
       this.selectFoods.forEach((food) => {
+        console.log(food);
         total += food.price * food.count;
       });
       return total;
