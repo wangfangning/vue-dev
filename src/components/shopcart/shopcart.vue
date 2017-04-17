@@ -23,6 +23,11 @@
       </div>
     </div>
   </div>
+  <div class="ball_container">
+  <div class="" v-for="ball in balls" v-show="ball.show">
+
+  </div>
+  </div>
 </div>
 </template>
 
@@ -32,10 +37,7 @@ export default {
     selectFoods: {
       type: Array,
       default () {
-        return [{
-            price: 5,
-            count: 2
-          }];
+        return [];
       }
     },
     deliveryPrice: {
@@ -47,11 +49,26 @@ export default {
       default: 0
     }
   },
+  data() {
+    return {
+      balls: [{
+        show:false
+      },{
+        show:false
+      },{
+        show:false
+      },{
+        show:false
+      },{
+        show:false
+      }
+    ]
+    }
+  }
   computed: {
     totalPrice() {
       let total = 0;
       this.selectFoods.forEach((food) => {
-        console.log(food);
         total += food.price * food.count;
       });
       return total;
