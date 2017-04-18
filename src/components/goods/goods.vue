@@ -135,7 +135,7 @@ export default {
       this._drop(target);
     },
     _drop(target) {
-      //优化加载，异步执行下落动画
+      // 优化加载，异步执行下落动画
       this.$nextTick(() => {
           this.$refs.shopcart.drop(target);
       });

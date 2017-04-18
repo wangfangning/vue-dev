@@ -32,12 +32,32 @@
         </div>
       </transition>
     </div>
-
+  </div>
+  <div class="shopcart_list" v-show="listShow">
+    <div class="list_header">
+      <h1 class="title">购物车</h1>
+      <span class="empty">清空</span>
+    </div>
+    <div class="list_content">
+      <ul>
+        <li class="food" v-for="food in selectFoods">
+          <span class="name">{{food.name}}</span>
+          <div class="price">
+            <span>￥{{food.price*food.count}}</span>
+          </div>
+          <div class="cartcontrol_wrapper">
+<cartcontrol :food="food"></cartcontrol>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
+import cartcontrol from 'components/cartcontrol/cartcontrol';
+
 export default {
   props: {
     selectFoods: {
@@ -80,6 +100,7 @@ export default {
       return total;
     },
     totalCount() {
+      console.log(this.selectFoods);
       let count = 0;
       this.selectFoods.forEach((food) => {
         count += food.count;
@@ -136,24 +157,27 @@ export default {
       }
     },
     dropping(el, done) {
-    /* eslint-disable no-unused-vars */
-    let rf = el.offsetHeight;
-    this.$nextTick(() => {
-      el.style.webkitTransform = 'translate3d(0,0,0)';
-      el.style.transform = 'translate3d(0,0,0)';
-      let inner = el.getElementsByClassName('inner-hook')[0];
-      inner.style.webkitTransform = 'translate3d(0,0,0)';
-      inner.style.transform = 'translate3d(0,0,0)';
-      el.addEventListener('transitionend', done);
-    });
-  },
-  afterDrop(el) {
-    let ball = this.dropBalls.shift();
-    if (ball) {
-      ball.show = false;
-      el.style.display = 'none';
+      /* eslint-disable no-unused-vars */
+      let rf = el.offsetHeight;
+      this.$nextTick(() => {
+        el.style.webkitTransform = 'translate3d(0,0,0)';
+        el.style.transform = 'translate3d(0,0,0)';
+        let inner = el.getElementsByClassName('inner-hook')[0];
+        inner.style.webkitTransform = 'translate3d(0,0,0)';
+        inner.style.transform = 'translate3d(0,0,0)';
+        el.addEventListener('transitionend', done);
+      });
+    },
+    afterDrop(el) {
+      let ball = this.dropBalls.shift();
+      if (ball) {
+        ball.show = false;
+        el.style.display = 'none';
+      }
     }
-  }
+  },
+  components: {
+    cartcontrol
   }
 };
 </script>
