@@ -25,9 +25,9 @@
               <div class="price">
                 <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
               </div>
-                <div class="cartcontrol_wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
-                </div>
+              <div class="cartcontrol_wrapper">
+                <cartcontrol @add="addFood" :food="food"></cartcontrol>
+              </div>
 
             </div>
 
@@ -36,7 +36,7 @@
       </li>
     </ul>
   </div>
-  <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+  <shopcart  ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 </div>
 </template>
 
@@ -84,7 +84,6 @@ export default {
           }
         });
       });
-      console.log(foods);
       return foods;
     }
   },
@@ -94,7 +93,6 @@ export default {
       response = response.body;
       if (response.errno === ERR_OK) {
         this.goods = response.data;
-        console.log(this.goods);
         this.$nextTick(() => {
           this._initScroll();
           this._calculateHeight();
@@ -132,8 +130,16 @@ export default {
         height += item.clientHeight;
         this.listHeight.push(height);
       }
+    },
+    addFood(target) {
+      this._drop(target);
+    },
+    _drop(target) {
+      //优化加载，异步执行下落动画
+      this.$nextTick(() => {
+          this.$refs.shopcart.drop(target);
+      });
     }
-
   }
 };
 </script>
@@ -260,10 +266,10 @@ export default {
                         color: rgb(147,153,159);
                     }
                 };
-                .cartcontrol_wrapper{
-                  position: absolute;;
-                  right: 0;
-                  bottom: 12px;
+                .cartcontrol_wrapper {
+                    position: absolute;
+                    right: 0;
+                    bottom: 12px;
                 }
             }
         }
