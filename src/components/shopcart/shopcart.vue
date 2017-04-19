@@ -1,62 +1,72 @@
 <template>
-<div class="shopcart">
-  <div class="content">
-    <div class="content_left">
-      <div class="logo_wrapper">
-        <div class="logo" :class="{'highlight':totalCount > 0}">
-          <i class="icon-shopping_cart" :class="{'highlight':totalCount > 0}"></i>
+  <div>
+    <div class="shopcart">
+      <div class="content" @click="toggleList">
+        <div class="content_left">
+          <div class="logo_wrapper">
+            <div class="logo" :class="{'highlight':totalCount > 0}">
+              <i class="icon-shopping_cart" :class="{'highlight':totalCount > 0}"></i>
+            </div>
+            <div class="num" v-show="totalCount > 0">
+              {{totalCount}}
+            </div>
+          </div>
+          <div class="price" :class="{'highlight':totalPrice > 0}">
+            ￥{{totalPrice}}
+          </div>
+          <div class="desc">
+            另需配送费￥{{deliveryPrice}}元
+          </div>
         </div>
-        <div class="num" v-show="totalCount > 0">
-          {{totalCount}}
+        <div class="content_right" @click.stop.prevent="pay">
+          <div class="pay" :class="payClass">
+            {{payDesc}}
+          </div>
         </div>
       </div>
-      <div class="price" :class="{'highlight':totalPrice > 0}">
-        ￥{{totalPrice}}
+      <div class="ball_container">
+        <div v-for="ball in balls">
+          <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+            <div class="ball" v-show="ball.show">
+              <div class="inner inner-hook">
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
-      <div class="desc">
-        另需配送费￥{{deliveryPrice}}元
-      </div>
-    </div>
-    <div class="content_right">
-      <div class="pay" :class="payClass">
-        {{payDesc}}
-      </div>
-    </div>
-  </div>
-  <div class="ball_container">
-    <div v-for="ball in balls">
-      <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
-        <div class="ball" v-show="ball.show">
-          <div class="inner inner-hook">
+      <transition name="fold">
+        <div class="shopcart_list" v-show="listShow">
+          <div class="list_header">
+            <h1 class="title">购物车</h1>
+            <span class="empty" @click="empty">清空</span>
+          </div>
+          <div class="list_content" ref="listContent">
+            <ul>
+              <li class="food" v-for="food in selectFoods">
+                <span class="name">{{food.name}}</span>
+                <div class="price">
+                  <span>￥{{food.price*food.count}}</span>
+                </div>
+                <div class="cartcontrol_wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </transition>
     </div>
-  </div>
-  <div class="shopcart_list" v-show="listShow">
-    <div class="list_header">
-      <h1 class="title">购物车</h1>
-      <span class="empty">清空</span>
+    <transition name="fade">
+    <div class="list_mask" @click="hideList" v-show="listShow">
     </div>
-    <div class="list_content">
-      <ul>
-        <li class="food" v-for="food in selectFoods">
-          <span class="name">{{food.name}}</span>
-          <div class="price">
-            <span>￥{{food.price*food.count}}</span>
-          </div>
-          <div class="cartcontrol_wrapper">
-<cartcontrol :food="food"></cartcontrol>
-          </div>
-        </li>
-      </ul>
-    </div>
+  </transition>
   </div>
-</div>
+
 </template>
 
 <script type="text/ecmascript-6">
 import cartcontrol from 'components/cartcontrol/cartcontrol';
+import BScroll from 'better-scroll';
 
 export default {
   props: {
@@ -88,7 +98,8 @@ export default {
       }, {
         show: false
       }],
-      dropBalls: []
+      dropBalls: [],
+      fold: true
     };
   },
   computed: {
@@ -123,9 +134,38 @@ export default {
       } else {
         return 'enough';
       }
+    },
+    listShow() {
+      if (!this.totalCount) {
+        this.fold = true;
+        return false;
+      }
+      let show = !this.fold;
+      if (show) {
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.listContent, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      }
+      return show;
     }
   },
   methods: {
+    toggleList() {
+      if (!this.totalCount) {
+        return;
+      }
+      this.fold = !this.fold;
+      console.log(this.fold);
+    },
+    hideList() {
+      this.fold = true;
+    },
     drop(el) {
       for (let i = 0; i < this.balls.length; i++) {
         let ball = this.balls[i];
@@ -174,6 +214,17 @@ export default {
         ball.show = false;
         el.style.display = 'none';
       }
+    },
+    empty() {
+      this.selectFoods.forEach((food) => {
+        food.count = 0;
+      });
+    },
+    pay() {
+      if (this.totalPrice < this.minPrice) {
+        return;
+      }
+      window.alert(`您需要支付${this.totalPrice}元`);
     }
   },
   components: {
@@ -182,7 +233,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss">@import '../../common/sass/mixin.scss';
+
 .shopcart {
     position: fixed;
     left: 0;
@@ -304,5 +356,82 @@ export default {
             }
         }
     }
+    .shopcart_list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        transition: all 0.5s linear;
+        transform: translate3d(0,-100%,0);
+        &.fold-enter,
+        &.fold-leave-active {
+            transform: translate3d(0,0,0);
+        }
+        .list_header {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 18px;
+            background: #f3f5f7;
+            border-bottom: 1px solid rgba(7,17,27,0.1);
+            .title {
+                float: left;
+                font-size: 14px;
+                color: rgb(7,17,27);
+            };
+            .empty {
+                float: right;
+                font-size: 12px;
+                color: rgb(0,160,220);
+            }
+        };
+        .list_content {
+            overflow: hidden;
+            padding: 0 18px;
+            max-height: 217px;
+            background: #fff;
+            .food {
+                position: relative;
+                padding: 12px 0;
+                box-sizing: border-box;
+                @include border-1px(rgba(7,17,27,0.1));
+                .name {
+                    line-height: 24px;
+                    font-size: 14px;
+                    color: rgb(7,17,27);
+                }
+                .price {
+                    position: absolute;
+                    right: 90px;
+                    bottom: 12px;
+                    line-height: 24px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: rgb(240,20,20);
+                };
+                .cartcontrol_wrapper {
+                    position: absolute;
+                    right: 0;
+                    bottom: 6px;
+                }
+            }
+        }
+
+    }
+}
+.list_mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+ opacity: 1;
+ background: rgba(7,17,27,0.6);
+ transition: all 0.5s;
+ backdrop-filter: blur(10px);
+ &.fade-enter,&.fade-leave-active{
+   opacity: 0;
+ }
 }
 </style>
