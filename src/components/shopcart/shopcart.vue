@@ -1,67 +1,66 @@
 <template>
-  <div>
-    <div class="shopcart">
-      <div class="content" @click="toggleList">
-        <div class="content_left">
-          <div class="logo_wrapper">
-            <div class="logo" :class="{'highlight':totalCount > 0}">
-              <i class="icon-shopping_cart" :class="{'highlight':totalCount > 0}"></i>
-            </div>
-            <div class="num" v-show="totalCount > 0">
-              {{totalCount}}
-            </div>
+<div>
+  <div class="shopcart">
+    <div class="content" @click="toggleList">
+      <div class="content_left">
+        <div class="logo_wrapper">
+          <div class="logo" :class="{'highlight':totalCount > 0}">
+            <i class="icon-shopping_cart" :class="{'highlight':totalCount > 0}"></i>
           </div>
-          <div class="price" :class="{'highlight':totalPrice > 0}">
-            ￥{{totalPrice}}
-          </div>
-          <div class="desc">
-            另需配送费￥{{deliveryPrice}}元
+          <div class="num" v-show="totalCount > 0">
+            {{totalCount}}
           </div>
         </div>
-        <div class="content_right" @click.stop.prevent="pay">
-          <div class="pay" :class="payClass">
-            {{payDesc}}
-          </div>
+        <div class="price" :class="{'highlight':totalPrice > 0}">
+          ￥{{totalPrice}}
+        </div>
+        <div class="desc">
+          另需配送费￥{{deliveryPrice}}元
         </div>
       </div>
-      <div class="ball_container">
-        <div v-for="ball in balls">
-          <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
-            <div class="ball" v-show="ball.show">
-              <div class="inner inner-hook">
-              </div>
-            </div>
-          </transition>
+      <div class="content_right" @click.stop.prevent="pay">
+        <div class="pay" :class="payClass">
+          {{payDesc}}
         </div>
       </div>
-      <transition name="fold">
-        <div class="shopcart_list" v-show="listShow">
-          <div class="list_header">
-            <h1 class="title">购物车</h1>
-            <span class="empty" @click="empty">清空</span>
-          </div>
-          <div class="list_content" ref="listContent">
-            <ul>
-              <li class="food" v-for="food in selectFoods">
-                <span class="name">{{food.name}}</span>
-                <div class="price">
-                  <span>￥{{food.price*food.count}}</span>
-                </div>
-                <div class="cartcontrol_wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </transition>
     </div>
-    <transition name="fade">
+    <div class="ball_container">
+      <div v-for="ball in balls">
+        <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+          <div class="ball" v-show="ball.show">
+            <div class="inner inner-hook">
+            </div>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <transition name="fold">
+      <div class="shopcart_list" v-show="listShow">
+        <div class="list_header">
+          <h1 class="title">购物车</h1>
+          <span class="empty" @click="empty">清空</span>
+        </div>
+        <div class="list_content" ref="listContent">
+          <ul>
+            <li class="food" v-for="food in selectFoods">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>￥{{food.price*food.count}}</span>
+              </div>
+              <div class="cartcontrol_wrapper">
+                <cartcontrol :food="food"></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
+  </div>
+  <transition name="fade">
     <div class="list_mask" @click="hideList" v-show="listShow">
     </div>
   </transition>
-  </div>
-
+</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -419,19 +418,20 @@ export default {
 
     }
 }
-.list_mask{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 40;
- opacity: 1;
- background: rgba(7,17,27,0.6);
- transition: all 0.5s;
- backdrop-filter: blur(10px);
- &.fade-enter,&.fade-leave-active{
-   opacity: 0;
- }
+.list_mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 40;
+    opacity: 1;
+    background: rgba(7,17,27,0.6);
+    transition: all 0.5s;
+    backdrop-filter: blur(10px);
+    &.fade-enter,
+    &.fade-leave-active {
+        opacity: 0;
+    }
 }
 </style>
