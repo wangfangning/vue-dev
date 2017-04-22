@@ -36,7 +36,7 @@
           <div class="star_wrapper">
             <star :size="48" :score="seller.score"></star>
           </div>
-          <v-title :text="title_top"></v-title>
+          <v-title></v-title>
           <ul v-if="seller.supports" class="supports">
             <li v-for="(item, index) in seller.supports" class="supports_item">
               <icon :class="classMap[item.type]"></icon>
@@ -73,7 +73,6 @@ export default {
   data() {
     return {
       detailShow: false,
-      title_top: '优惠信息',
       title_bottom: '商家公告'
     };
   },

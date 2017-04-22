@@ -1,7 +1,6 @@
 <template lang="html">
   <div class="title">
     <div class="line">
-
     </div>
     <div class="text">{{title}}
     </div>
@@ -14,7 +13,8 @@
 export default {
   props: {
     text: {
-      type: String
+      type: String,
+      default: '优惠信息'
     }
   },
   data() {
