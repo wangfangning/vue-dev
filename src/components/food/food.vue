@@ -77,7 +77,7 @@ export default {
     show() {
       this.showFlag = true;
       this.selectType = ALL;
-      this.onlyContent = true;
+      this.onlyContent = false;
       // $nextTick方法dom渲染完再执行
       this.$nextTick(() => {
         if (!this.scroll) {
