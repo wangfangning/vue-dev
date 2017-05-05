@@ -260,6 +260,9 @@ export default {
                 box-sizing: border-box;
                 border-radius: 50%;
                 background: #141d27;
+                @media (max-width: 320px){
+                  margin: 0 6px;
+                }
                 .logo {
                     width: 100%;
                     height: 100%;
@@ -304,18 +307,22 @@ export default {
                 border-right: 1px solid rgba(255, 255, 255, .1);
                 font-size: 16px;
                 font-weight: 700;
+                @media (max-width: 320px) {
+                  padding-right: 6px;
+                }
                 &.highlight {
                     color: #fff;
                 }
-
             };
             .desc {
                 display: inline-block;
                 vertical-align: top;
                 margin-left: 12px;
                 line-height: 48px;
-
                 font-size: 10px;
+                @media (max-width: 320px) {
+                  margin-left: 6px;
+                }
 
             }
         };

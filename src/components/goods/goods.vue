@@ -91,7 +91,6 @@ export default {
           }
         });
       });
-      console.log(foods);
       return foods;
     }
   },
@@ -122,8 +121,8 @@ export default {
         return;
       };
       this.selectedFood = food;
+      console.log(this.$refs);
       this.$refs.food.show();
-      console.log(food);
     },
     _initScroll() {
       this.menuScroll = new BScroll(this.$refs.menuWrapper, {

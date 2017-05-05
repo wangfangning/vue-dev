@@ -9,9 +9,6 @@
     <span class="icon-check_circle"></span>
     <span class="text">只看有内容的评价</span>
   </div>
-  <ul>
-    <li v-for="item in ratings">{{item.username}}</li>
-  </ul>
 </div>
 </template>
 
@@ -70,7 +67,7 @@ export default {
       if (!event._constructed) {
         return;
       }
-      this.$emit('toggle');
+      this.$emit('toggle', event);
     }
   }
 };

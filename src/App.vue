@@ -23,14 +23,16 @@ const ERR_OK = 0;
 export default {
   data() {
     return {
-      seller: {}
+      seller: {},
+      ratings: []
     };
   },
   created() {
+    // 向后台发送请求商家数据
     this.$http.get('/api/seller').then((response) => {
       response = response.body;
       if (response.errno === ERR_OK) {
-           this.seller = response.data;
+        this.seller = response.data;
       }
     });
   },
@@ -40,8 +42,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "/common/sass/mixin.scss";
+<style lang="scss">@import "/common/sass/mixin.scss";
 .app {
     .tab {
         display: flex;
