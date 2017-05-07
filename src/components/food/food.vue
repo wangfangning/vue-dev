@@ -21,7 +21,7 @@
           <cartcontrol :food="food" @add="addFood"></cartcontrol>
         </div>
         <transition name="fade">
-          <div class="buy" v-show="!food.count || food.count === 0" @click.stop="addFirst">加入购物车</div>
+          <div class="buy" v-show="!food.count || food.count === 0" @click.stop.prevent="addFirst">加入购物车</div>
         </transition>
       </div>
       <split v-show="food.info"></split>
@@ -32,7 +32,7 @@
       <split></split>
       <div class="rating">
         <h1 class="title">商品评价</h1>
-        <ratingselect @toggle="toggleCount" @select="selectRating" :desc="desc" :selectType="selectType" :onlyContent="onlyContent" :ratings="food.ratings"></ratingselect>
+        <ratingselect @toggle="toggleContent" @select="selectRating" :desc="desc" :selectType="selectType" :onlyContent="onlyContent" :ratings="food.ratings"></ratingselect>
         <div class="rating_wrapper">
           <ul v-show="food.ratings && food.ratings.length">
             <li v-show="needShow(rating.rateType,rating.text)" v-for="rating in food.ratings" class="rating_item border-1px">
@@ -61,99 +61,96 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Vue from 'vue';
-import BScroll from 'better-scroll';
-import cartcontrol from 'components/cartcontrol/cartcontrol';
-import split from 'components/split/split';
-import ratingselect from 'components/ratingselect/ratingselect';
-import {formatDate} from 'common/js/date.js';
+  import BScroll from 'better-scroll';
+  import Vue from 'vue';
+  import {formatDate} from 'common/js/date';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import ratingselect from 'components/ratingselect/ratingselect';
+  import split from 'components/split/split';
 
-// const POSITIVE = 0;
-// const NEGATIVE = 1;
-const ALL = 2;
+  const ALL = 2;
 
-export default {
-  props: {
-    food: {
-      type: Object
-    }
-  },
-  data() {
-    return {
-      showFlag: false,
-      selectType: ALL,
-      onlyContent: true,
-      desc: {
-        all: '全部',
-        positive: '推荐',
-        negative: '吐槽'
+  export default {
+    props: {
+      food: {
+        type: Object
       }
-    };
-  },
-  components: {
-    cartcontrol,
-    split,
-    ratingselect
-  },
-  methods: {
-    show() {
-      this.showFlag = true;
-      this.selectType = ALL;
-      this.onlyContent = false;
-      // $nextTick方法dom渲染完再执行
-      this.$nextTick(() => {
-        if (!this.scroll) {
-          this.scroll = new BScroll(this.$refs.food, {
-            click: true
-          });
-        } else {
-          this.scroll.refresh();
+    },
+    data() {
+      return {
+        showFlag: false,
+        selectType: ALL,
+        onlyContent: false,
+        desc: {
+          all: '全部',
+          positive: '推荐',
+          negative: '吐槽'
         }
-      });
-    },
-    hide() {
-      this.showFlag = false;
-    },
-    addFirst(event) {
-      if (!event._constructed) {
-        return;
-      }
-      this.$emit('add', event.target);
-      Vue.set(this.food, 'count', 1);
-    },
-    addFood(target) {
-      this.$emit('add', target);
-    },
-    selectRating(type) {
-      this.selectType = type;
-      this.$nextTick(() => {
-        this.scroll.refresh();
-      });
-    },
-    toggleCount(event) {
-      this.onlyContent = !this.onlyContent;
-      this.$nextTick(() => {
-        this.scroll.refresh();
-      });
-    },
-    needShow(type, text) {
-      if (this.onlyContent && !text) {
-        return false;
       };
-      if (this.selectType === ALL) {
-        return true;
-      } else {
-        return type === this.selectType;
+    },
+    methods: {
+      show() {
+        this.showFlag = true;
+        this.selectType = ALL;
+        this.onlyContent = false;
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.food, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      },
+      hide() {
+        this.showFlag = false;
+      },
+      addFirst(event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.$emit('add', event.target);
+        Vue.set(this.food, 'count', 1);
+      },
+      needShow(type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
+      },
+      addFood(target) {
+        this.$emit('add', target);
+      },
+      selectRating(type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent() {
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
       }
+    },
+    filters: {
+      formatDate(time) {
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
+      }
+    },
+    components: {
+      cartcontrol,
+      ratingselect,
+      split
     }
-  },
-  filters: {
-    formatDate(time) {
-      let date = new Date(time);
-      return formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-  }
-};
+  };
 </script>
 
 <style lang="scss">@import "../../common/sass/mixin.scss";
@@ -251,10 +248,12 @@ export default {
             font-size: 10px;
             color: #fff;
             background: rgb(0,160,220);
-            transition: all 0.3s;
+            transition: all 0.2s;
+            opacity: 1;
             &.fade-enter,
             &.fade-leave-active {
                 opacity: 0;
+                z-index: -1;
             }
 
         }
