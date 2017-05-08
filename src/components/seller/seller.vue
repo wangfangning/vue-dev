@@ -1,5 +1,5 @@
 <template>
-<div class="seller">
+<div class="seller" ref="seller">
   <div class="seller_content">
     <div class="overview">
       <h1 class="title">{{seller.name}}</h1>
@@ -37,7 +37,7 @@
         <p class="content">{{seller.bulletin}}</p>
       </div>
       <ul v-if="seller.supports" class="supports">
-        <li v-for="(item, index) in seller.supports" class="supports_item border-1px">
+        <li v-for="(item, index) in seller.supports" class="support_item border-1px">
           <icon :class="classMap[item.type]"></icon>
           <span class="text">{{item.description}}</span>
         </li>
@@ -49,6 +49,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import BScroll from 'better-scroll';
 import star from 'components/star/star';
 import split from 'components/split/split';
 import icon from 'components/icon/icon';
@@ -62,8 +63,35 @@ export default {
       }
     }
   },
-  created() {
-    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+  data() {
+    return {
+      classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this._initScroll();
+    });
+    console.log(2222);
+  },
+  watch: {
+    seller () {
+      // console.log(this.seller);
+      this.$nextTick(() => {
+        this._initScroll();
+      });
+    }
+  },
+  methods: {
+    _initScroll() {
+      if (!this.scroll) {
+        this.scroll = new BScroll(this.$refs.seller, {
+          click: true
+        });
+      } else {
+        this.scroll.refresh();
+      }
+    }
   },
   components: {
     star,
@@ -156,7 +184,44 @@ export default {
             }
         };
         .supports {
+            .support_item {
+                padding: 16px 12px;
+                @include border-1px(rgba(7,17,27,0.1));
+                font-size: 0;
+                &:last-child{
+                @include border-none();
+                }
+                .icon {
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 4px;
+                    background-size: 16px;
+                    background-repeat: no-repeat;
+                    &.decrease {
+                        @include bg-image( 'decrease_4');
+                    }
+                    &.discount {
+                        @include bg-image( 'discount_4');
+                    }
+                    &.guarantee {
+                        @include bg-image( 'guarantee_4');
+                    }
+                    &.invoice {
+                        @include bg-image( 'invoice_4');
+                    }
+                    &.special {
+                        @include bg-image( 'special_4');
+                    }
+                }
+                .text{
+                  line-height: 16px;
+                  font-size: 12px;
+                  color: rgb(7,17,27);
+                }
             }
+        }
     }
 }
 </style>

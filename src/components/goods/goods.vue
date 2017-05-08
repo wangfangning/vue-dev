@@ -68,7 +68,8 @@ export default {
       goods: [],
       listHeight: [],
       scrollY: 0,
-      selectedFood: {}
+      selectedFood: {},
+      classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee']
     };
   },
   computed: {
@@ -95,7 +96,7 @@ export default {
     }
   },
   created() {
-    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    // this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     this.$http.get('./api/goods').then((response) => {
       response = response.body;
       if (response.errno === ERR_OK) {
