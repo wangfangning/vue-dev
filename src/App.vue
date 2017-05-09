@@ -17,14 +17,20 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {urlParam} from 'common/js/util.js';
 import header from 'components/header/header';
+
 const ERR_OK = 0;
 
 export default {
   data() {
     return {
-      seller: {},
-      ratings: []
+      seller: {
+        id: (() => {
+          let queryParam = urlParam();
+          return queryParam.id;
+        })()
+      }
     };
   },
   created() {
@@ -32,7 +38,9 @@ export default {
     this.$http.get('/api/seller').then((response) => {
       response = response.body;
       if (response.errno === ERR_OK) {
-        this.seller = response.data;
+        // 直接this.seller = response.data,因为json对象里seller没有id属性，所以会忽略；
+        // 这里es6 Object.assgin()方法把this.seller对象和请求的数据组成新的对象返回；
+        this.seller = Object.assign({}, this.seller, response.data);
       }
     });
   },

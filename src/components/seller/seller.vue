@@ -28,6 +28,10 @@
           </div>
         </li>
       </ul>
+      <div class="favorite" @click="toggleFavorite">
+        <span class="icon-favorite" :class="{'active': favorite}"></span>
+        <span class="text">{{favoriteText}}</span>
+      </div>
 
     </div>
     <split></split>
@@ -82,7 +86,8 @@ export default {
   },
   data() {
     return {
-      classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+      classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee'],
+      favorite: false
     };
   },
   mounted() {
@@ -101,7 +106,18 @@ export default {
       });
     }
   },
+  computed: {
+    favoriteText() {
+      return this.favorite ? '已收藏' : '收藏';
+    }
+  },
   methods: {
+    toggleFavorite(event) {
+      if (!event._constructed) {
+        return;
+      }
+      this.favorite = !this.favorite;
+    },
     _initScroll() {
       if (!this.scroll) {
         this.scroll = new BScroll(this.$refs.seller, {
@@ -149,7 +165,6 @@ export default {
     .overview {
         position: relative;
         padding: 18px;
-
         .title {
             margin-bottom: 8px;
             line-height: 14px;
@@ -200,6 +215,28 @@ export default {
                         font-size: 24px;
                     }
                 }
+            }
+        }
+        .favorite {
+            position: absolute;
+            width: 50px;
+            right: 11px;
+            top: 18px;
+            text-align: center;
+            .icon-favorite {
+                display: block;
+                margin-bottom: 4px;
+                line-height: 24px;
+                font-size: 24px;
+                color: #d4d6d9;
+                &.active {
+                    color: #f01414;
+                }
+            };
+            .text {
+                line-height: 10px;
+                font-size: 10px;
+                color: #4d555d;
             }
         }
     }
@@ -295,14 +332,14 @@ export default {
             @include border-1px(rgba(7,17,27,0.1));
             font-size: 14px;
         };
-        .info_item{
-          padding: 16px 12px;
-          line-height: 16px;
-          @include border-1px(rgba(7,17,27,0.1));
-          font-size: 12px;
-          &:last-child{
-            @include border-none();
-          }
+        .info_item {
+            padding: 16px 12px;
+            line-height: 16px;
+            @include border-1px(rgba(7,17,27,0.1));
+            font-size: 12px;
+            &:last-child {
+                @include border-none();
+            }
         }
     }
 }
