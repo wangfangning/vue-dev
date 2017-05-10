@@ -6,6 +6,7 @@ export function urlParam() {
   let url = window.location.search;
   let obj = {};
   // 匹配[?&](?&)后面[^?&](非?&)得字符，+代表匹配多次；
+  console.log(url);
   let reg = /[?&][^?&]+=[^?&]+/g;
   let arr = url.match(reg);
   console.log(arr);
@@ -16,7 +17,7 @@ export function urlParam() {
       let val = decodeURIComponent(tempArr[1]);
       obj[key] = val;
     });
-    console.log(obj);
+    // console.log(obj);
     return obj;
   }
 };

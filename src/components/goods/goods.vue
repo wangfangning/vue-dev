@@ -104,6 +104,7 @@ export default {
         this.$nextTick(() => {
           this._initScroll();
           this._calculateHeight();
+          console.log(this.$refs);
         });
       }
     });
@@ -122,7 +123,6 @@ export default {
         return;
       };
       this.selectedFood = food;
-      console.log(this.$refs);
       this.$refs.food.show();
     },
     _initScroll() {
@@ -160,7 +160,8 @@ export default {
 };
 </script>
 
-<style lang="scss">@import "../../common/sass/mixin.scss";
+<style lang="scss">
+@import "../../common/sass/mixin.scss";
 .goods {
     display: flex;
     position: absolute;

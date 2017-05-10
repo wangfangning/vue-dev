@@ -74,6 +74,7 @@ import BScroll from 'better-scroll';
 import star from 'components/star/star';
 import split from 'components/split/split';
 import icon from 'components/icon/icon';
+import { saveToLocal, loadFromLocal } from 'common/js/store';
 
 export default {
   props: {
@@ -87,15 +88,20 @@ export default {
   data() {
     return {
       classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee'],
-      favorite: false
+      // 读取缓存中存储的值，有的话返回，没有返回false
+      favorite: (() => {
+        return loadFromLocal(this.seller.id, 'favorite', false);
+      })()
     };
   },
   mounted() {
     this.$nextTick(() => {
       this._initScroll();
       this._initPics();
+      console.log(3);
+      // 这么写也可以
+      // this.favorite = loadFromLocal(this.seller.id, 'favorite', false);
     });
-    console.log(this.seller);
   },
   watch: {
     seller() {
@@ -103,6 +109,8 @@ export default {
       this.$nextTick(() => {
         this._initScroll();
         this._initPics();
+        // 这么写也可以
+        // this.favorite = loadFromLocal(this.seller.id, 'favorite', false);
       });
     }
   },
@@ -110,6 +118,11 @@ export default {
     favoriteText() {
       return this.favorite ? '已收藏' : '收藏';
     }
+    // ,
+    // favorite() {
+    //   console.log(localStorage.favorite.key);
+    //   return localStorage.favorite;
+    // }
   },
   methods: {
     toggleFavorite(event) {
@@ -117,6 +130,7 @@ export default {
         return;
       }
       this.favorite = !this.favorite;
+      saveToLocal(this.seller.id, 'favorite', this.favorite);
     },
     _initScroll() {
       if (!this.scroll) {
