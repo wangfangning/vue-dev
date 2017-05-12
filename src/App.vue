@@ -30,6 +30,9 @@ export default {
       seller: {
         id: (() => {
           let queryParam = urlParam();
+          if (!queryParam) {
+            return;
+          }
           return queryParam.id;
         })()
       }

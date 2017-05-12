@@ -130,6 +130,7 @@ export default {
         return;
       }
       this.favorite = !this.favorite;
+      // 缓存当前id信息
       saveToLocal(this.seller.id, 'favorite', this.favorite);
     },
     _initScroll() {

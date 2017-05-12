@@ -17,6 +17,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    // publicPath: 'http://39.155.134.156:197/dist/'
   },
   vue: {
     loaders: utils.cssLoaders({
