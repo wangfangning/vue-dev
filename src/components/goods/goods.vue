@@ -216,6 +216,7 @@ export default {
             margin-top: -1px;
             background-color: #fff;
             font-weight: 700;
+            border-left: 2px solid #3190e8;
             .text {
                 @include border-none();
             }

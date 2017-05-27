@@ -163,10 +163,12 @@
     z-index: 30;
     background: #fff;
     transform: translate3d(0,0,0);
-    transition: all 0.4s;
+    transition: all 0.3s;
+    opacity: 1;
     &.move-enter,
     &.move-leave-active {
-        transform: translate3d(100%,0,0);
+        transform: translate3d(20%,0,0);
+        opacity: 0;
     }
     .image_header {
         position: relative;
