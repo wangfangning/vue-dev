@@ -1,25 +1,25 @@
 <template>
-<div class="app">
-  <v-header :seller="seller"></v-header>
-  <div class="tab border-1px">
-    <div class="tab_item">
-      <router-link to="/goods">商品</router-link>
+  <div class="app">
+    <v-header :seller="seller"></v-header>
+    <div class="tab border-1px">
+      <div class="tab_item">
+        <router-link to="/goods">商品</router-link>
+      </div>
+      <div class="tab_item">
+        <router-link to="/ratings">评论</router-link>
+      </div>
+      <div class="tab_item">
+        <router-link to="/seller">商pp家</router-link>
+      </div>
     </div>
-    <div class="tab_item">
-      <router-link to="/ratings">评论</router-link>
-    </div>
-    <div class="tab_item">
-      <router-link to="/seller">商家</router-link>
-    </div>
+    <keep-alive>
+      <router-view :seller="seller"></router-view>
+    </keep-alive>
   </div>
-  <keep-alive>
-  <router-view :seller="seller"></router-view>
-</keep-alive>
-</div>
 </template>
 
 <script type="text/ecmascript-6">
-import {urlParam} from 'common/js/util.js';
+import { urlParam } from 'common/js/util.js';
 import header from 'components/header/header';
 
 const ERR_OK = 0;
@@ -55,27 +55,27 @@ export default {
 };
 </script>
 
-<style lang="scss">@import "/common/sass/mixin.scss";
+<style lang="scss">
+@import "/common/sass/mixin.scss";
 .app {
-    .tab {
-        display: flex;
-        text-align: center;
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        @include border-1px(rgba(7,17,27,0.1));
-        .tab_item {
-            flex: 1;
-            & > a {
-                display: block;
-                font-size: 14px;
-                color: #4d555d;
-            }
-            a.active {
-                color: #f01414;
-            }
-        }
+  .tab {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    @include border-1px(rgba(7, 17, 27, 0.1));
+    .tab_item {
+      flex: 1;
+      &>a {
+        display: block;
+        font-size: 14px;
+        color: #4d555d;
+      }
+      a.active {
+        color: #f01414;
+      }
     }
-
+  }
 }
 </style>
