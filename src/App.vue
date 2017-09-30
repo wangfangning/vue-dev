@@ -9,7 +9,7 @@
         <router-link to="/ratings">评论</router-link>
       </div>
       <div class="tab_item">
-        <router-link to="/seller">商pp家</router-link>
+        <router-link to="/seller">商家</router-link>
       </div>
     </div>
     <keep-alive>
