@@ -1,27 +1,27 @@
 <template lang="html">
-  <div class="title">
-    <div class="line">
+    <div class="title">
+        <div class="line">
+        </div>
+        <div class="text">{{title}}
+        </div>
+        <div class="line">
+        </div>
     </div>
-    <div class="text">{{title}}
-    </div>
-    <div class="line">
-    </div>
-  </div>
 </template>
 
 <script>
 export default {
-  props: {
-    text: {
-      type: String,
-      default: '优惠信息'
+    props: {
+        text: {
+            type: String,
+            default: '优惠信息'
+        }
+    },
+    data() {
+        return {
+            'title': this.text
+        };
     }
-  },
-  data() {
-    return {
-      'title': this.text
-    };
-  }
 };
 </script>
 

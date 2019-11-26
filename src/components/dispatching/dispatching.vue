@@ -1,39 +1,39 @@
 <template lang="html">
-  <transition name="fade">
-  <div class="dispatching" v-show="isShow">
-    <h1 class="title"><i class="icon-arrow_lift" @click='hide($event)'></i>确认订单</h1>
-    <div class="content-wrapper">
-      <div class="address-wrapper">
-        <div class="address" v-if="address">
-          vvv
+    <transition name="fade">
+        <div class="dispatching" v-show="isShow">
+            <h1 class="title"><i class="icon-arrow_lift" @click='hide($event)'></i>确认订单</h1>
+            <div class="content-wrapper">
+                <div class="address-wrapper">
+                    <div class="address" v-if="address">
+                        vvv
+                    </div>
+                    <div class="no-address" v-else>
+                        请添加一个收货地址
+                    </div>
+                    <i class="icon-keyboard_arrow_right"></i>
+                </div>
+            </div>
         </div>
-        <div class="no-address" v-else>
-          请添加一个收货地址
-        </div>
-      <i class="icon-keyboard_arrow_right"></i>
-      </div>
-    </div>
-  </div>
-</transition>
+    </transition>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      isShow: false,
-      address: false
-    };
-  },
-  methods: {
-    show() {
-      this.isShow = true;
+    data() {
+        return {
+            isShow: false,
+            address: false
+        };
     },
-    hide(el) {
-      console.log(el);
-      this.isShow = false;
+    methods: {
+        show() {
+            this.isShow = true;
+        },
+        hide(el) {
+            console.log(el);
+            this.isShow = false;
+        }
     }
-  }
 };
 </script>
 

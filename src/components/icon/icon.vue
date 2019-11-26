@@ -1,5 +1,5 @@
 <template>
-  <span class="icon"></span>
+    <span class="icon"></span>
 </template>
 <script>
 export default {

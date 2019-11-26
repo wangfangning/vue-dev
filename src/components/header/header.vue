@@ -1,63 +1,63 @@
 <template>
-<div class="header">
-  <div class="content_wrapper">
-    <div class="avatar">
-      <img width="64" height="64" alt="" :src="seller.avatar">
-    </div>
-    <div class="content">
-      <div class="title">
-        <span class="brand"></span>
-        <span class="name">{{ seller.name }}</span>
-      </div>
-      <div class="description">{{ seller.description }}/{{seller.deliveryTime}}分钟送达
-      </div>
-      <div class="supports" v-if="seller.supports">
-        <icon :class="classMap[seller.supports[0].type]"></icon>
-        <span class="text">{{ seller.supports[0].description }}</span>
-      </div>
-    </div>
-    <div class="support-count" v-if="seller.supports" @click="showDetail">
-      <span class="count">{{ seller.supports.length }}个</span>
-      <i class="icon-keyboard_arrow_right"></i>
-    </div>
-  </div>
-  <div class="bulletin_wrapper" @click="showDetail">
-    <span class="bulletin_title"></span><span class="bulletin_text">{{ seller.bulletin }}</span>
-    <i class="icon-keyboard_arrow_right"></i>
-  </div>
-  <div class="background">
-    <img :src="seller.avatar" alt="" width="100%" height="100%">
-  </div>
-  <transition name="fade">
-    <div class="detail" v-show="detailShow">
-      <div class="detail_wrapper clearfix">
-        <div class="detail_main">
-          <h1 class="name">{{seller.name}}</h1>
-          <div class="star_wrapper">
-            <star :size="48" :score="seller.score"></star>
-          </div>
-          <v-title></v-title>
-          <ul v-if="seller.supports" class="supports">
-            <li v-for="(item, index) in seller.supports" class="supports_item">
-              <icon :class="classMap[item.type]"></icon>
-              <!-- <span class="icon" :class="classMap[item.type]"></span> -->
-              <span class="text">{{item.description}}</span>
-            </li>
-          </ul>
-          <v-title :text="title_bottom"></v-title>
-          <div class="bulletin">
-            <p class="content">{{seller.bulletin}}</p>
-          </div>
+    <div class="header">
+        <div class="content_wrapper">
+            <div class="avatar">
+                <img width="64" height="64" alt="" :src="seller.avatar">
+            </div>
+            <div class="content">
+                <div class="title">
+                    <span class="brand"></span>
+                    <span class="name">{{ seller.name }}</span>
+                </div>
+                <div class="description">{{ seller.description }}/{{seller.deliveryTime}}分钟送达
+                </div>
+                <div class="supports" v-if="seller.supports">
+                    <icon :class="classMap[seller.supports[0].type]"></icon>
+                    <span class="text">{{ seller.supports[0].description }}</span>
+                </div>
+            </div>
+            <div class="support-count" v-if="seller.supports" @click="showDetail">
+                <span class="count">{{ seller.supports.length }}个</span>
+                <i class="icon-keyboard_arrow_right"></i>
+            </div>
         </div>
+        <div class="bulletin_wrapper" @click="showDetail">
+            <span class="bulletin_title"></span><span class="bulletin_text">{{ seller.bulletin }}</span>
+            <i class="icon-keyboard_arrow_right"></i>
+        </div>
+        <div class="background">
+            <img :src="seller.avatar" alt="" width="100%" height="100%">
+        </div>
+        <transition name="fade">
+            <div class="detail" v-show="detailShow">
+                <div class="detail_wrapper clearfix">
+                    <div class="detail_main">
+                        <h1 class="name">{{seller.name}}</h1>
+                        <div class="star_wrapper">
+                            <star :size="48" :score="seller.score"></star>
+                        </div>
+                        <v-title></v-title>
+                        <ul v-if="seller.supports" class="supports">
+                            <li v-for="(item, index) in seller.supports" class="supports_item" :key="index">
+                                <icon :class="classMap[item.type]"></icon>
+                                <!-- <span class="icon" :class="classMap[item.type]"></span> -->
+                                <span class="text">{{item.description}}</span>
+                            </li>
+                        </ul>
+                        <v-title :text="title_bottom"></v-title>
+                        <div class="bulletin">
+                            <p class="content">{{seller.bulletin}}</p>
+                        </div>
+                    </div>
 
-      </div>
-      <div class="detail_close" @click="hideDetail">
-        <i class="icon-close"></i>
-      </div>
+                </div>
+                <div class="detail_close" @click="hideDetail">
+                    <i class="icon-close"></i>
+                </div>
+            </div>
+        </transition>
+
     </div>
-  </transition>
-
-</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -65,33 +65,34 @@ import star from 'components/star/star';
 import title from 'components/title/title';
 import icon from 'components/icon/icon';
 export default {
-  props: {
-    seller: {
-      type: Object
-    }
-  },
-  data() {
-    return {
-      detailShow: false,
-      title_bottom: '商家公告'
-    };
-  },
-  methods: {
-    showDetail() {
-      this.detailShow = true;
+    props: {
+        seller: {
+            type: Object,
+            default: () => ({})
+        }
     },
-    hideDetail() {
-      this.detailShow = false;
+    data() {
+        return {
+            detailShow: false,
+            title_bottom: '商家公告'
+        };
+    },
+    methods: {
+        showDetail() {
+            this.detailShow = true;
+        },
+        hideDetail() {
+            this.detailShow = false;
+        }
+    },
+    created() {
+        this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    },
+    components: {
+        star,
+        'v-title': title,
+        icon
     }
-  },
-  created() {
-    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-  },
-  components: {
-    star,
-    'v-title': title,
-    icon
-  }
 };
 </script>
 

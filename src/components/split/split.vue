@@ -1,7 +1,7 @@
 <template>
-<div class="split">
-<slot></slot>
-</div>
+    <div class="split">
+        <slot></slot>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">

@@ -12,27 +12,27 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const routes = [{
-  path: '/',
-  component: goods
+    path: '/',
+    component: goods
 }, {
-  path: '/goods',
-  component: goods
+    path: '/goods',
+    component: goods
 }, {
-  path: '/ratings',
-  component: ratings
+    path: '/ratings',
+    component: ratings
 }, {
-  path: '/seller',
-  component: seller
+    path: '/seller',
+    component: seller
 }
 ];
 
 const router = new VueRouter({
-  linkActiveClass: 'active',
-   routes
+    linkActiveClass: 'active',
+    routes
 });
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  render: h => h(App)
+    el: '#app',
+    router,
+    render: h => h(App)
 });
